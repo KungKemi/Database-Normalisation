@@ -1,0 +1,64 @@
+# Window scaling constants (relative to monitor)
+MAIN_WIDTH_SCALE = 0.50
+MAIN_HEIGHT_SCALE = 0.60
+CHILD_WIDTH_SCALE = 0.75
+CHILD_HEIGHT_SCALE = 0.75
+
+# Image / Text scaling constants
+TITLE_FONT_SCALE = 0.04
+FONT_SCALE = 0.03
+BUTTON_FONT_SCALE = 0.02
+PHOTO_PIXEL_SKIP = 10
+
+# Column indexes
+LEFT_TEXT_COL = 2
+RIGHT_TEXT_COL = 10
+
+# Row indexes
+LABEL_ROW = 1
+BODY_ROW = 3
+BUTTON_ROW = 5
+LABEL_TWO_ROW = 5
+BODY_TWO_ROW = 7
+BUTTON_TWO_ROW = 9
+
+# Child button indexes
+CANCEL_BUTTON_COL = 13
+SUBMIT_BUTTON_COL = 15
+
+# Column spans
+DEFAULT_COL_SPAN = 15
+EXTENSIVE_COL_SPAN = 25
+
+# Number of columns
+DEFAULT_NUM_COLS = 19
+EXTENSIVE_NUM_COLS = 29
+
+# Number of rows
+DEFAULT_NUM_ROWS = 7
+EXTENSIVE_NUM_ROWS = 11
+
+# Component weights
+DEFAULT_WEIGHT = 1
+LABEL_WEIGHT = 0
+BODY_WEIGHT = 12
+
+# Other constants
+BULLET = '\u2022'
+GREEN = '#00B050'
+OFF = '\u2B1C'
+ON = '\u274E'
+START_SUPERKEY_COLOUR = '1.12'
+BUTTON_TIP_DELAY = 500
+MIN_NUM_LIST_LINES = 5
+SCROLLED_TEXT_HEIGHT = 1
+TEXT_SPACING = 1
+BUTTON_TEXT_HEIGHT = 1
+
+# Relation / Dependency layout constants
+INSERTION_BUTTON_COL = 23
+DELETION_BUTTON_COL = 25
+
+# Dependency creator layout constants
+BLANK_BUTTON_ONE_COL = 5
+BLANK_BUTTON_TWO_COL = 7

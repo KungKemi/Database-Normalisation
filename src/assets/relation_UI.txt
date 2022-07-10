@@ -1,0 +1,93 @@
+[credits]
+Created in Python 3.9.1, compiled using Pyinstaller 4.3
+Created by: Alexander Johnson
+Updated: 27/06/2021
+
+[input]
+Enter option: 
+
+[error]
+Error: not a valid input option
+Error: input must be a positive integer
+Error: attribute(s) must be in relation
+Error: dependency must be non-trivial
+Error: no dependencies currently defined
+Error: there are only {} dependencies
+
+[attribute]
+When entering attributes, please separate each by a space or comma.
+Specify attributes: 
+
+[menu]
+----+[menu interface]+---------------------------------------------------
+ 1 - create new relation
+ 2 - select a relation
+ q - terminate program
+
+[creator]
+There are {}/3 relations currently defined.
+If you wish to create a new relation, please delete a pre-existing one...
+
+[delete]
+----+[delete interface]+-------------------------------------------------
+ 1 - delete relation 1
+ 2 - delete relation 2
+ 3 - delete relation 3
+ m - go to menu
+
+[select]
+----+[select interface]+-------------------------------------------------
+ 1 - select relation 1 
+ 2 - select relation 2
+ 3 - select relation 3
+ m - go to menu
+You have no loaded relations, would you like to create one [Y/N]? 
+
+[relation]
+----+[relation interface]+-----------------------------------------------
+ 1 - add/edit dependencies
+ 2 - compute result
+ 3 - view relation
+ 4 - delete relation
+ r - return to previous
+ m - go to menu
+Are you sure that you wish to delete this relation [Y/N]? 
+
+[depend]
+----+[dependency interface]+---------------------------------------------
+ 1 - add a dependency
+ 2 - remove a dependency
+ 3 - erase all dependencies
+ r - return to previous
+ m - go to menu
+How many dependencies would you like to add? 
+[Dependency {}]
+Left-hand side: 
+Right-hand side: 
+Which dependency would you like to remove? 
+Are you sure that you wish to erase all dependencies [Y/N]? 
+
+[compute]
+----+[computation interface]+--------------------------------------------
+ 1 - compute closure
+ 2 - compute keys
+ 3 - superkey test
+ 4 - highest normal form
+ 5 - normalisation
+ r - return to previous
+ m - go to menu
+Closure:
+The relation has {} valid keys:
+Is super key?
+The highest normal form of the relation is {}.
+Return first instance of {} violation [Y/N]? 
+
+[decomp]
+----+[normalisation interface]+------------------------------------------
+ 1 - compute minimal cover
+ 2 - 3NF decomposition
+ 3 - BCNF decomposition
+ r - return to previous
+ m - go to menu
+With union [Y/N]? 
+

@@ -4,25 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6410b62b-f736-4339-b1f2-e0e9bb06cc39" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Relation.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/plus_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/relation_UI.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/assets/trash_icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/relation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/relation_GUI.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/relation_GUI_constants.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/relation_UI.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/set_theory.py" afterDir="false" />
+    <list default="true" id="6410b62b-f736-4339-b1f2-e0e9bb06cc39" name="Changes" comment="The second commit, including scripts and assets.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/relation_GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/relation_GUI.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -40,6 +34,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "last_opened_file_path": "C:/Users/theja/IdeaProjects/Relation/src"
   }
 }]]></component>
@@ -114,6 +109,14 @@
       <option name="presentableId" value="Default" />
       <updated>1657444785022</updated>
     </task>
+    <task id="LOCAL-00001" summary="The second commit, including scripts and assets.">
+      <created>1657445739689</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1657445739689</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,5 +129,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="The second commit, including scripts and assets." />
+    <option name="LAST_COMMIT_MESSAGE" value="The second commit, including scripts and assets." />
   </component>
 </project>

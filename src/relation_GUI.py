@@ -1,5 +1,5 @@
-from tkinter import *
 from relation_GUI_constants import *
+import tkinter as tk
 from tkinter import messagebox
 from idlelib.tooltip import Hovertip
 from relation import Rel
@@ -18,7 +18,7 @@ def initialise_grid(window):
     Returns:
         (Frame): the frame containing the grid
     """
-    frame = Frame(window)
+    frame = tk.Frame(window)
     window.rowconfigure(0, weight=DEFAULT_WEIGHT)
     window.columnconfigure(0, weight=DEFAULT_WEIGHT)
     frame.grid(row=0, column=0, sticky='news')
@@ -64,14 +64,14 @@ class WindowMenu(object):
         """
         self._parent = parent
         parent_window = parent.get_window()
-        menubar = Menu(parent_window)
+        menubar = tk.Menu(parent_window)
         # Add option to create new relation
         menubar.add_cascade(
             label='Create relation',
             command=self.create_relation
         )
         # Add submenu to calculate results
-        calculate_menu = Menu(menubar, tearoff=0)
+        calculate_menu = tk.Menu(menubar, tearoff=0)
         # Add closure option
         calculate_menu.add_command(
             label='closure',
@@ -209,7 +209,7 @@ class MainWindow(object):
         can create and interact with a relation and its dependencies.
         Application terminates on closure."""
         # Set primary window
-        self._main_window = Tk()
+        self._main_window = tk.Tk()
         self._main_window.title("Relation Tool")
         # Get monitor size
         screen_width = self._main_window.winfo_screenwidth()
@@ -337,7 +337,7 @@ class ChildWindow(object):
         """
         self._parent = parent
         parent_window = parent.get_window()
-        self._child_window = Toplevel(parent_window)
+        self._child_window = tk.Toplevel(parent_window)
         self._child_window.grab_set()  # Set focus
         self._child_window.wm_transient(parent_window)  # Bring to foreground
         # Calculate child dimensions
@@ -499,7 +499,7 @@ class CreateRelationWindow(ChildWindow):
         Returns:
             (list<str>): the list of attributes
         """
-        attribute_text = self._text.get_text('1.0', END)
+        attribute_text = self._text.get_text('1.0', tk.END)
         raw_attributes = attribute_text.split('\n')
         attributes = []
         for index, attribute in enumerate(raw_attributes):
@@ -722,7 +722,7 @@ class NormalFormWindow(ChildWindow):
         normal_form = relation.highest_NF()
         # Get widget which holds dependencies
         for widget in parent.get_widgets():
-            if isinstance(widget, Listbox):
+            if isinstance(widget, tk.Listbox):
                 # Found it
                 break
         if normal_form == '1NF':
@@ -1105,14 +1105,14 @@ class SuperKeyWindow(OptionWindow):
             self._text_two.set_text_colour(
                 GREEN,
                 START_SUPERKEY_COLOUR,
-                END
+                tk.END
             )
         else:
             # Make text red
             self._text_two.set_text_colour(
                 'red',
                 START_SUPERKEY_COLOUR,
-                END
+                tk.END
             )
 
 
@@ -1149,10 +1149,10 @@ class LabelType(WindowComponent):
         """
         super().__init__(relative)
         # Create label
-        self._label = Label(
+        self._label = tk.Label(
             self._frame,
-            justify=LEFT,
-            anchor=W,
+            justify=tk.LEFT,
+            anchor='w',
             text=text
         )
         # Fix label to grid
@@ -1214,15 +1214,27 @@ class ScrolledHVText(WindowComponent):
 
     def __init__(self, relative, horizontal, vertical,
                  row_num, col_num, col_span):
+        """ Creates a new ScrolledHVText instance and places it in
+        the window. Horizontal and vertical scrollbars can be optionally
+        set.
+
+        Parameters:
+            relative(object): the window in which the textbox resides
+            horizontal(bool): if True, sets a horizontal scroll bar
+            vertical(bool): if True, sets a vertical scroll bar
+            row_num(int): the row in which the textbox resides
+            col_num(int): the column in which the textbox resides
+            col_span(int): the number of columns over which the textbox spans
+        """
         super().__init__(relative)
         # Create text
-        self._text = Text(
+        self._text = tk.Text(
             self._frame,
             height=SCROLLED_TEXT_HEIGHT,
             spacing1=TEXT_SPACING,
             font=self._relative.get_font(),
-            state=DISABLED,
-            wrap=NONE
+            state=tk.DISABLED,
+            wrap=tk.NONE
         )
         # Add text to grid
         self._text.grid(
@@ -1234,7 +1246,7 @@ class ScrolledHVText(WindowComponent):
         # Add scrollbars (if specified)
         if horizontal:
             # Add horizontal scrollbar
-            text_scroll_x = Scrollbar(self._frame, orient=HORIZONTAL)
+            text_scroll_x = tk.Scrollbar(self._frame, orient=tk.HORIZONTAL)
             self._text.configure(xscrollcommand=text_scroll_x.set)
             text_scroll_x.config(command=self._text.xview)
             # Add scrollbar to grid
@@ -1246,7 +1258,7 @@ class ScrolledHVText(WindowComponent):
             )
         if vertical:
             # Add vertical scrollbar
-            text_scroll_y = Scrollbar(self._frame, orient=VERTICAL)
+            text_scroll_y = tk.Scrollbar(self._frame, orient=tk.VERTICAL)
             self._text.configure(yscrollcommand=text_scroll_y.set)
             text_scroll_y.config(command=self._text.yview)
             # Add scrollbar to grid
@@ -1257,52 +1269,92 @@ class ScrolledHVText(WindowComponent):
             )
 
     def enable_text(self):
+        """ Enables text editing in the widget and sets
+        cursor to xterm."""
         self._text.configure(
-            state=NORMAL,
+            state=tk.NORMAL,
             cursor='xterm'
         )
 
     def disable_text(self):
+        """ Disables text editing in the widget and sets
+        cursor to default."""
         self._text.configure(
-            state=DISABLED,
+            state=tk.DISABLED,
             cursor='arrow'
         )
 
+    def get_text(self, start, end):
+        """ Gets the text currently between the start and end indexes,
+        inclusive.
+
+        Parameters:
+            start(str): the start index of the text
+            end(str): the end index of the text
+
+        Returns:
+            (str): the text in the widget
+        """
+        return self._text.get(start, end)
+
     def set_text(self, text):
+        """ Resets the contents of the widget and sets the text
+        with the specified string.
+
+        Parameters:
+            text(str): the text to insert into the widget
+        """
         # Enable ability to modify text
         self.enable_text()
         # Clear text
-        self._text.delete('1.0', END)
+        self._text.delete('1.0', tk.END)
         # Insert text
-        self._text.insert(INSERT, text)
+        self._text.insert(tk.INSERT, text)
         # Disable ability to modify text
         self.disable_text()
 
     def set_text_colour(self, colour, start, end):
+        """ Changes the colour of the text in the widget
+        between the specified start and end indexes, inclusive.
+
+        Parameters:
+            colour(str): the colour of the text
+            start(str): the start index of the text
+            end(str): the end index of the text
+        """
         # Create colour tag
         self._text.tag_add('colour', start, end)
         # Configure tag
         self._text.tag_configure('colour', foreground=colour)
 
-    def get_text(self, start, end):
-        return self._text.get(start, end)
-
 
 class ScrolledListbox(WindowComponent):
+    """ A class representing a Listbox widget, which can be scrolled
+    horizontally and vertically. Extends WindowComponent."""
+
     def __init__(self, relative, row_num, col_num, col_span):
+        """ Creates a new ScrolledListbox instance and places it in
+        the window.
+
+        Parameters:
+            relative(object): the window in which the listbox resides
+            row_num(int): the row in which the listbox resides
+            col_num(int): the column in which the listbox resides
+            col_span(int): the number of columns over which the listbox spans
+        """
         super().__init__(relative)
         # Add scrollbar for listbox widget
-        listbox_scroll_x = Scrollbar(self._frame, orient=HORIZONTAL)
-        listbox_scroll_y = Scrollbar(self._frame, orient=VERTICAL)
+        listbox_scroll_x = tk.Scrollbar(self._frame, orient=tk.HORIZONTAL)
+        listbox_scroll_y = tk.Scrollbar(self._frame, orient=tk.VERTICAL)
         # Create listbox
-        self._listbox = Listbox(
+        self._listbox = tk.Listbox(
             self._frame,
             height=MIN_NUM_LIST_LINES,
             font=self._relative.get_font(),
             cursor='hand2',
-            selectmode=MULTIPLE,
+            selectmode=tk.MULTIPLE,
             exportselection=False,
-            activestyle=NONE,
+            activestyle=tk.NONE,
             xscrollcommand=listbox_scroll_x.set,
             yscrollcommand=listbox_scroll_y.set
         )
@@ -1330,29 +1382,60 @@ class ScrolledListbox(WindowComponent):
         )
 
     def bind(self, function):
+        """ Calls the given function whenever there is an update
+        in the Listbox selection.
+
+        Parameters:
+            function: the function to call
+        """
         # Binds function to listbox
         self._listbox.bind('<<ListboxSelect>>', function)
 
     def get_selected_lines(self):
+        """ Returns a list of lines currently selected by the user
+        in the Listbox.
+
+        Returns:
+            (list<str>): the list of selected lines
+        """
         selected_lines = []
         for index in self._listbox.curselection():
             selected_lines.append(self._listbox.get(index))
         return selected_lines
 
     def add_lines(self, lines):
-        self._listbox.insert(END, *lines)
+        """ Adds the list of lines to the end of the Listbox
+        as new options.
+
+        Parameters:
+            lines(list<str>): the list of lines to add
+        """
+        self._listbox.insert(tk.END, *lines)
 
     def remove_lines(self):
+        """ Removes any options from the Listbox which are currently
+        selected by the user."""
         # Remove currently selected lines
         for index in self._listbox.curselection():
             self._listbox.delete(index)
 
 
 class BaseButton(WindowComponent):
+    """ An abstract class representing a type of button which
+    can be placed in the tkinter window. Extends WindowComponent."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new BaseButton instance and places it in
+        the window.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative)
         # Create button
-        self._button = Button(
+        self._button = tk.Button(
             self._frame,
             cursor='hand2',
             command=self.button_action
@@ -1361,11 +1444,22 @@ class BaseButton(WindowComponent):
         self._button.grid(column=col_num, row=row_num, sticky='news')
 
     def button_action(self):
+        """ Represents an abstract function which is called whenever the
+        button is pressed."""
         return
 
 
 class TextButton(BaseButton):
+    """ An abstract class representing a type of button which contains text.
+    Extends BaseButton."""
+
     def set_text(self, text):
+        """ Sets the given string of text to be displayed by the
+        button.
+
+        Parameters:
+            text(str): the text to be displayed
+        """
         self._button.configure(
             height=BUTTON_TEXT_HEIGHT,
             font=self._relative.get_button_font(),
@@ -1374,53 +1468,100 @@ class TextButton(BaseButton):
 
 
 class BlankButton(TextButton):
+    """ A class representing a type of button which is not visible.
+   Extends TextButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new BlankButton instance and places it in
+        the window. Sets the text as 'Blank '.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         self.set_text('Blank ')
         # Hide button from sight
         self._button.configure(
             bd=0,
-            state=ACTIVE,
+            state=tk.ACTIVE,
             fg=self._window['bg'],
             activeforeground=self._window['bg']
         )
 
 
 class CloseButton(TextButton):
-    def __init__(self, relative, row_num, col_num):
-        super().__init__(relative, row_num, col_num)
+    """ An abstract class representing a type of button which closes the
+    active window on interaction. Extends TextButton."""
 
     def button_action(self):
+        """ Closes the window on button interaction."""
         # Close window
         self._window.destroy()
 
 
 class CancelButton(CloseButton):
+    """ A class representing a type of button which closes the
+    window and displays text. Extends CloseButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new CancelButton instance and places it in
+        the window. Sets the text as 'Cancel'.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         # Set text of cancel button
         self.set_text('Cancel')
 
 
 class OkayButton(CloseButton):
+    """ A class representing a type of button which closes the
+    window and displays text. Extends CloseButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new OkayButton instance and places it in
+        the window. Sets the text as 'Okay'.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         # Set text of okay button
         self.set_text('Okay')
 
 
 class SubmitButton(TextButton):
+    """ An abstract class representing a type of button which performs
+    an action and closes the window. Extends TextButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new SubmitButton instance and places it in
+        the window. Sets the text as 'Submit'.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         # Set text of submit button
         self.set_text('Submit')
 
 
 class CreateRelationButton(SubmitButton):
-    def __init__(self, relative, row_num, col_num):
-        super().__init__(relative, row_num, col_num)
+    """ A class representing a type of button which creates a new relation
+    and closes the window. Extends SubmitButton."""
 
     def button_action(self):
+        """ Attempts to create a new relation and add components to the
+        main window, on button interaction."""
         attributes = self._relative.get_attributes()
         if len(attributes) == 0:
             # No attributes given
@@ -1442,10 +1583,12 @@ class CreateRelationButton(SubmitButton):
 
 
 class CreateDependencyButton(SubmitButton):
-    def __init__(self, relative, row_num, col_num):
-        super().__init__(relative, row_num, col_num)
+    """ A class representing a type of button which creates a new dependency
+    and closes the window. Extends SubmitButton."""
 
     def button_action(self):
+        """ Attempts to create a new dependency and add it to the
+        ScrolledListbox in the main window, on button interaction."""
         child = self._relative
         if child.is_dependency_empty():
             # No attributes selected on left- or right-hand sides
@@ -1484,10 +1627,10 @@ class CreateDependencyButton(SubmitButton):
             return
         # Add dependency to main window list
         for widget in parent.get_widgets():
-            if isinstance(widget, Listbox):
+            if isinstance(widget, tk.Listbox):
                 # Add dependency
                 widget.insert(
-                    END,
+                    tk.END,
                     f' {get_FD_string(left_attributes, right_attributes)}'
                 )
                 break
@@ -1496,16 +1639,29 @@ class CreateDependencyButton(SubmitButton):
 
 
 class UnionButton(TextButton):
+    """ A class representing a type of button which enables or disables
+    union of the displayed minimal cover. Extends TextButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new UnionButton instance and places it in
+        the window. Sets the text as 'Union' and configures visuals.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         # Set text on union button
         self.set_text(f'Union {OFF}')
         # Configure button options
-        self._button.configure(relief=GROOVE)
+        self._button.configure(relief=tk.GROOVE)
         # Configure grid options
         self._button.grid(sticky='nes')
 
     def button_action(self):
+        """ Toggles whether to display the minimal cover with union
+        or no union, on button interaction."""
         button_text = self._button['text']
         if button_text == f'Union {OFF}':
             # Put button in ON state
@@ -1520,18 +1676,44 @@ class UnionButton(TextButton):
 
 
 class ImageButton(BaseButton):
+    """ An abstract class representing a type of button which displays
+    an image and shows a tooltip. Extends BaseButton."""
+
     def set_image(self, file_name):
-        icon = PhotoImage(file=file_name) \
+        """ Sets the image displayed by the button using the picture
+        located at the given filepath.
+
+        Parameters:
+            file_name(str): the relative path of the image
+        """
+        icon = tk.PhotoImage(file=file_name) \
             .subsample(PHOTO_PIXEL_SKIP, PHOTO_PIXEL_SKIP)
         self._button.configure(image=icon)
         self._button.photo = icon
 
     def set_tooltip(self, text):
+        """ Sets a tooltip which displays the specified text.
+
+        Parameters:
+            text(str): the text to be displayed by the tooltip
+        """
         Hovertip(self._button, text, BUTTON_TIP_DELAY)
 
 
 class InsertionButton(ImageButton):
+    """ A class representing a type of button which shows an icon
+    and opens a window to create a new dependency.
+    Extends ImageButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new InsertionButton instance and places it in
+        the window. Sets the image and tooltip.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         # Add image to insertion button
         self.set_image('assets/plus_icon.png')
@@ -1539,12 +1721,26 @@ class InsertionButton(ImageButton):
         self.set_tooltip('Add a dependency')
 
     def button_action(self):
+        """ Opens a new CreateDependencyWindow instance on button
+        interaction."""
         # Open new window to create dependency
         CreateDependencyWindow(self._relative)
 
 
 class DeletionButton(ImageButton):
+    """ A class representing a type of button which shows an icon
+    and deletes any selected dependencies.
+    Extends ImageButton."""
+
     def __init__(self, relative, row_num, col_num):
+        """ Creates a new DeletionButton instance and places it in
+        the window. Sets the image and tooltip.
+
+        Parameters:
+            relative(object): the window in which the button resides
+            row_num(int): the row in which the button resides
+            col_num(int): the column in which the button resides
+        """
         super().__init__(relative, row_num, col_num)
         # Add image to deletion button
         self.set_image('assets/trash_icon.png')
@@ -1552,12 +1748,13 @@ class DeletionButton(ImageButton):
         self.set_tooltip('Delete selected dependencies')
 
     def button_action(self):
+        """ Deletes the selected dependencies, on button interaction."""
         # Get parent and relation
         parent = self._relative
         relation = parent.get_relation()
         # Remove selected dependencies
         for widget in parent.get_widgets():
-            if isinstance(widget, Listbox):
+            if isinstance(widget, tk.Listbox):
                 # Found the listbox
                 break
         for dependency in widget.curselection()[::-1]:
@@ -1569,7 +1766,16 @@ class DeletionButton(ImageButton):
 
 
 class RelationComponents(WindowComponent):
+    """ A class which adds GUI components to the MainWindow when
+    a new relation is created. Extends WindowComponent."""
+
     def __init__(self, relative):
+        """ Adds components to display the current relation, and its dependencies.
+        Buttons are added which enable insertion and deletion of dependencies.
+
+        Parameters:
+            relative(object): the window to which the components are added
+        """
         super().__init__(relative)
         # Create relation label
         relation_label = ScrolledHVText(
@@ -1613,8 +1819,9 @@ class RelationComponents(WindowComponent):
 
 
 def main():
-    """Entry point to interaction"""
-    # Initalise application
+    """ Opens a tkinter application which handles all interaction
+    with the user."""
+    # Initialise application
     MainWindow()
 
 
